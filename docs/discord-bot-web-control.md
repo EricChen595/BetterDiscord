@@ -39,3 +39,6 @@ npm run start:dashboard
 
 
 > 如果 `git` 指令不存在，先安裝 Git（Windows: Git for Windows），並重開終端機。
+
+
+> 若 PowerShell `cd` 顯示找不到路徑，先在 `$HOME` 執行 `dir` 與 `Test-Path` 檢查實際資料夾名稱（可能是 `BetterDiscord-main`）。

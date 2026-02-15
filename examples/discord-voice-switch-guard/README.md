@@ -103,6 +103,38 @@ cd .\BetterDiscord\examples\discord-voice-switch-guard
 3. 解壓縮後，進入：
    `BetterDiscord-main\examples\discord-voice-switch-guard`
 
+### 如果 `cd .\BetterDiscord\examples\discord-voice-switch-guard` 顯示「找不到路徑」
+
+先不要急，通常是資料夾名稱不同。請先看目前有哪些資料夾：
+
+```powershell
+cd $HOME
+dir
+```
+
+常見情況：
+
+1. 你是用 ZIP 下載，資料夾會叫 `BetterDiscord-main`
+   ```powershell
+   cd .\BetterDiscord-main\examples\discord-voice-switch-guard
+   ```
+2. 你 clone 到別的名稱或路徑
+   - 先用 `dir` 找到實際資料夾名稱，再 `cd` 進去
+3. 根本還沒下載成功
+   - 重新執行：
+   ```powershell
+   git clone https://github.com/<你的帳號或fork>/BetterDiscord.git
+   ```
+
+你也可以先測試路徑是否存在：
+
+```powershell
+Test-Path .\BetterDiscord\examples\discord-voice-switch-guard
+Test-Path .\BetterDiscord-main\examples\discord-voice-switch-guard
+```
+
+哪個顯示 `True` 就用哪個 `cd`。
+
 ### macOS / Linux
 
 ```bash
@@ -125,6 +157,12 @@ npm install
 cp .env.example .env
 ```
 
+Windows 小提醒（PowerShell）：如果 `cp` 不習慣，可改用：
+
+```powershell
+copy .env.example .env
+```
+
 打開 `.env`，把值填好：
 
 ```env
@@ -145,7 +183,7 @@ PORT=3000
 ### 終端 A（跑 Bot）
 
 ```bash
-cd /workspace/BetterDiscord/examples/discord-voice-switch-guard
+cd <你的 BetterDiscord 路徑>/examples/discord-voice-switch-guard
 npm run start:bot
 ```
 
@@ -154,11 +192,20 @@ npm run start:bot
 ### 終端 B（跑網頁）
 
 ```bash
-cd /workspace/BetterDiscord/examples/discord-voice-switch-guard
+cd <你的 BetterDiscord 路徑>/examples/discord-voice-switch-guard
 npm run start:dashboard
 ```
 
 看到 `Dashboard running on http://localhost:3000` 代表成功。
+
+Windows（PowerShell）可直接執行：
+
+```powershell
+cd <你的 BetterDiscord 路徑>\examples\discord-voice-switch-guard
+npm run start:bot
+# 另一個視窗再跑：
+npm run start:dashboard
+```
 
 ---
 
