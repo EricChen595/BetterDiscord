@@ -14,6 +14,7 @@
 ## 快速開始
 
 ```bash
+git --version
 cd <你的 BetterDiscord 路徑>/examples/discord-voice-switch-guard
 npm install
 cp .env.example .env
@@ -35,3 +36,6 @@ npm run start:dashboard
 ## 大伺服器說明
 
 3-5 萬人可以用，但建議依 README 的「3-5 萬人大伺服器建議」改成 Redis/監控架構再正式上線。
+
+
+> 如果 `git` 指令不存在，先安裝 Git（Windows: Git for Windows），並重開終端機。

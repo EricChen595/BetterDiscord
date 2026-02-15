@@ -27,6 +27,20 @@ npm -v
 
 如果有顯示版本號（例如 `v22.x.x`），就可以繼續。
 
+再確認 Git 有安裝：
+
+```bash
+git --version
+```
+
+如果出現「`git` 不是內部或外部命令」(Windows) 或 `command not found`，請先安裝 Git：
+
+- Windows：安裝 **Git for Windows**（https://git-scm.com/download/win）
+- macOS：`xcode-select --install`（或 `brew install git`）
+- Ubuntu/Debian：`sudo apt update && sudo apt install -y git`
+
+安裝後請**關掉並重開終端機**再執行 `git --version`。
+
 ---
 
 ## 步驟 1：建立 Discord 應用程式 + Bot
@@ -81,6 +95,13 @@ cd $HOME
 git clone https://github.com/<你的帳號或fork>/BetterDiscord.git
 cd .\BetterDiscord\examples\discord-voice-switch-guard
 ```
+
+如果你還沒裝 Git，也可以先用下載 ZIP 的方式：
+
+1. 開啟 `https://github.com/<你的帳號或fork>/BetterDiscord`
+2. 按 `Code` -> `Download ZIP`
+3. 解壓縮後，進入：
+   `BetterDiscord-main\examples\discord-voice-switch-guard`
 
 ### macOS / Linux
 
