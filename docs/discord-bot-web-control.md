@@ -42,3 +42,6 @@ npm run start:dashboard
 
 
 > 若 PowerShell `cd` 顯示找不到路徑，先在 `$HOME` 執行 `dir` 與 `Test-Path` 檢查實際資料夾名稱（可能是 `BetterDiscord-main`）。
+
+
+> 不知道資料夾在哪：在 PowerShell 執行 `Get-ChildItem -Path $HOME -Directory -Recurse | Where-Object { $_.FullName -like "*discord-voice-switch-guard" }` 快速找路徑。

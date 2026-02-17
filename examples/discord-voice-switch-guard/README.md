@@ -83,6 +83,22 @@ git --version
 
 ## 步驟 4：下載專案並進入範例資料夾（依你的作業系統）
 
+## 我不知道什麼資料夾（1 分鐘找出來）
+
+在 Windows PowerShell 直接貼上：
+
+```powershell
+cd $HOME
+Get-ChildItem -Directory | Select-Object Name
+Get-ChildItem -Path $HOME -Directory -Recurse -ErrorAction SilentlyContinue |
+  Where-Object { $_.FullName -like "*discord-voice-switch-guard" } |
+  Select-Object -First 5 FullName
+```
+
+- 如果有看到 `...\BetterDiscord\examples\discord-voice-switch-guard`，就 `cd` 到那一行。
+- 如果有看到 `...\BetterDiscord-main\examples\discord-voice-switch-guard`，就 `cd` 到那一行。
+- 如果都沒有結果，代表你尚未下載專案（請回到步驟 4 用 `git clone` 或 Download ZIP）。
+
 你遇到的錯誤是正常的：`/workspace/...` 是我這個雲端工作環境的路徑，不是你電腦的路徑。
 另外你在 Windows PowerShell 直接打 `bash`，如果沒有安裝 WSL 也會失敗。
 
