@@ -143,6 +143,40 @@ cd .\BetterDiscord\examples\discord-voice-switch-guard
 3. 解壓縮後，進入：
    `BetterDiscord-main\examples\discord-voice-switch-guard`
 
+### 如果 `git clone` 顯示 `destination path ... already exists`
+
+這代表你電腦已經有一個 `BetterDiscord` 資料夾，但裡面不一定是你要的版本。
+
+先檢查這個資料夾裡有沒有範例：
+
+```powershell
+cd $HOME\BetterDiscord
+Test-Path .\examples\discord-voice-switch-guard
+```
+
+- 如果結果是 `True`：
+  ```powershell
+  cd .\examples\discord-voice-switch-guard
+  ```
+- 如果結果是 `False`：代表你目前這份 `BetterDiscord` 沒有這個範例，請擇一：
+
+#### 做法 1：刪掉舊資料夾後重新 clone
+
+```powershell
+cd $HOME
+Remove-Item .\BetterDiscord -Recurse -Force
+git clone https://github.com/<你的帳號或fork>/BetterDiscord.git
+cd .\BetterDiscord\examples\discord-voice-switch-guard
+```
+
+#### 做法 2：保留舊資料夾，改 clone 到新名稱
+
+```powershell
+cd $HOME
+git clone https://github.com/<你的帳號或fork>/BetterDiscord.git BetterDiscord-fresh
+cd .\BetterDiscord-fresh\examples\discord-voice-switch-guard
+```
+
 ### 如果 `cd .\BetterDiscord\examples\discord-voice-switch-guard` 顯示「找不到路徑」
 
 先不要急，通常是資料夾名稱不同。請先看目前有哪些資料夾：
