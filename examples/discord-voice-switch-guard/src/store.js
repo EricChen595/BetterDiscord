@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS guild_settings (
   window_seconds INTEGER NOT NULL DEFAULT 10,
   max_switches INTEGER NOT NULL DEFAULT 3,
   action TEXT NOT NULL DEFAULT 'mute',
+  action_role_id TEXT NOT NULL DEFAULT '',
   mute_duration_seconds INTEGER NOT NULL DEFAULT 300,
   action_cooldown_seconds INTEGER NOT NULL DEFAULT 120,
   ignore_bots INTEGER NOT NULL DEFAULT 1,
@@ -31,20 +32,22 @@ function ensureColumn(name, sql) {
 ensureColumn('unverified_only', "unverified_only INTEGER NOT NULL DEFAULT 0");
 ensureColumn('unverified_role_ids', "unverified_role_ids TEXT NOT NULL DEFAULT '[]'");
 ensureColumn('action_cooldown_seconds', 'action_cooldown_seconds INTEGER NOT NULL DEFAULT 120');
+ensureColumn('action_role_id', "action_role_id TEXT NOT NULL DEFAULT ''");
 
 const upsertDefaultStmt = db.prepare('INSERT OR IGNORE INTO guild_settings (guild_id) VALUES (?)');
 const getStmt = db.prepare('SELECT * FROM guild_settings WHERE guild_id = ?');
 const setStmt = db.prepare(`
 INSERT INTO guild_settings (
   guild_id, enabled, window_seconds, max_switches, action,
-  mute_duration_seconds, action_cooldown_seconds, ignore_bots, whitelist_role_ids,
+  action_role_id, mute_duration_seconds, action_cooldown_seconds, ignore_bots, whitelist_role_ids,
   unverified_only, unverified_role_ids
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(guild_id) DO UPDATE SET
   enabled = excluded.enabled,
   window_seconds = excluded.window_seconds,
   max_switches = excluded.max_switches,
   action = excluded.action,
+  action_role_id = excluded.action_role_id,
   mute_duration_seconds = excluded.mute_duration_seconds,
   action_cooldown_seconds = excluded.action_cooldown_seconds,
   ignore_bots = excluded.ignore_bots,
@@ -60,6 +63,7 @@ function rowToSettings(row) {
     windowSeconds: row.window_seconds,
     maxSwitches: row.max_switches,
     action: row.action,
+    actionRoleId: row.action_role_id || '',
     muteDurationSeconds: row.mute_duration_seconds,
     actionCooldownSeconds: row.action_cooldown_seconds,
     ignoreBots: !!row.ignore_bots,
@@ -81,6 +85,7 @@ function setGuildSettings(guildId, settings) {
     settings.windowSeconds,
     settings.maxSwitches,
     settings.action,
+    settings.actionRoleId || '',
     settings.muteDurationSeconds,
     settings.actionCooldownSeconds,
     settings.ignoreBots ? 1 : 0,

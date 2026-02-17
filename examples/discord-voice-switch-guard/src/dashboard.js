@@ -125,9 +125,11 @@ app.get('/', requireLogin, (req, res) => {
             <option value="mute" ${settings.action === 'mute' ? 'selected' : ''}>mute</option>
             <option value="kick" ${settings.action === 'kick' ? 'selected' : ''}>kick</option>
             <option value="ban" ${settings.action === 'ban' ? 'selected' : ''}>ban</option>
+            <option value="add_role" ${settings.action === 'add_role' ? 'selected' : ''}>add_role（加身分組）</option>
           </select>
         </label><br/>
         <label>禁言秒數（action=mute 時）：<input type="number" min="10" max="86400" name="muteDurationSeconds" value="${settings.muteDurationSeconds}" /></label><br/>
+        <label>處置身分組 ID（action=add_role 時必填）：<input style="width:100%" name="actionRoleId" value="${escapeHtml(settings.actionRoleId || '')}" /></label><br/>
         <label>處置冷卻秒數（避免短時間重複處罰）：<input type="number" min="10" max="3600" name="actionCooldownSeconds" value="${settings.actionCooldownSeconds}" /></label><br/>
         <label><input type="checkbox" name="ignoreBots" ${settings.ignoreBots ? 'checked' : ''}/> 忽略 Bot</label><br/>
         <label><input type="checkbox" name="unverifiedOnly" ${settings.unverifiedOnly ? 'checked' : ''}/> 只處理未認證成員</label><br/>
@@ -160,12 +162,13 @@ app.post('/guilds/:guildId/settings', requireLogin, (req, res) => {
   if (!isOwner) return res.status(403).send('forbidden');
 
   const action = req.body.action;
-  if (!['mute', 'kick', 'ban'].includes(action)) return res.status(400).send('invalid action');
+  if (!['mute', 'kick', 'ban', 'add_role'].includes(action)) return res.status(400).send('invalid action');
 
   const windowSeconds = Number(req.body.windowSeconds);
   const maxSwitches = Number(req.body.maxSwitches);
   const muteDurationSeconds = Number(req.body.muteDurationSeconds);
   const actionCooldownSeconds = Number(req.body.actionCooldownSeconds);
+  const actionRoleId = String(req.body.actionRoleId || '').trim();
 
   if (Number.isNaN(windowSeconds) || windowSeconds < 1 || windowSeconds > 120) {
     return res.status(400).send('windowSeconds out of range');
@@ -175,6 +178,9 @@ app.post('/guilds/:guildId/settings', requireLogin, (req, res) => {
   }
   if (Number.isNaN(actionCooldownSeconds) || actionCooldownSeconds < 10 || actionCooldownSeconds > 3600) {
     return res.status(400).send('actionCooldownSeconds out of range');
+  }
+  if (action === 'add_role' && !actionRoleId) {
+    return res.status(400).send('actionRoleId required when action=add_role');
   }
 
   const whitelistRoleIds = String(req.body.whitelistRoleIds || '')
@@ -192,6 +198,7 @@ app.post('/guilds/:guildId/settings', requireLogin, (req, res) => {
     windowSeconds,
     maxSwitches,
     action,
+    actionRoleId,
     muteDurationSeconds: Number.isNaN(muteDurationSeconds) ? 300 : muteDurationSeconds,
     actionCooldownSeconds,
     ignoreBots: !!req.body.ignoreBots,

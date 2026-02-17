@@ -3,7 +3,7 @@
 你要的功能是：
 
 - 會員在**10 秒內**切換語音頻道**超過 3 次**就處理
-- 處理方式可選：`mute` / `kick` / `ban`
+- 處理方式可選：`mute` / `kick` / `ban` / `add_role`（加指定身分組）
 - 可選「只處理未認證成員」
 - 由伺服器擁有者在網頁改設定
 
@@ -75,6 +75,7 @@ git --version
    - `Mute Members`（如果你要 mute）
    - `Kick Members`（如果你要 kick）
    - `Ban Members`（如果你要 ban）
+   - `Manage Roles`（如果你要 add_role）
 4. 複製產生的 URL，用瀏覽器開啟，邀請到你的伺服器
 
 > 另外要注意：Bot 角色要高於一般成員角色，不然可能無法 kick/ban/mute。
@@ -291,7 +292,8 @@ npm run start:dashboard
 4. 在伺服器卡片設定：
    - `windowSeconds` 填 `10`
    - `maxSwitches` 填 `3`
-   - `action` 選你要的（`mute` / `kick` / `ban`）
+   - `action` 選你要的（`mute` / `kick` / `ban` / `add_role`）
+   - 若選 `add_role`，把「處置身分組 ID」填入你要加上的角色 ID
    - `actionCooldownSeconds` 建議先填 `120`（避免重複處罰）
    - 如果你只想管「未認證成員」，勾選 `只處理未認證成員`
    - 如果你伺服器有自訂身分組（例如「未認證成員」），把該角色 ID 填進 `未認證角色 ID`
@@ -317,6 +319,38 @@ npm run start:dashboard
 
 
 
+
+## 放到 GitHub 讓你直接下載
+
+你可以用下面指令把這份專案放到你自己的 GitHub Repo，之後就能固定用同一個連結下載：
+
+```bash
+cd <你的 BetterDiscord 路徑>
+git checkout -b my-voice-guard
+git add examples/discord-voice-switch-guard docs/discord-bot-web-control.md
+git commit -m "feat: add role assignment action for voice switch guard"
+git remote add myrepo https://github.com/<你的帳號>/<你的repo>.git
+git push -u myrepo my-voice-guard
+```
+
+推上去後，其他機器只要：
+
+```bash
+git clone https://github.com/<你的帳號>/<你的repo>.git
+cd <你的repo>/examples/discord-voice-switch-guard
+```
+
+## 放雲端（最省事版本）
+
+如果你不想自己電腦一直開著，建議用 Railway/Render：
+
+1. 建立兩個服務（Bot 一個、Dashboard 一個）。
+2. 兩個服務都指向同一份 Repo 的 `examples/discord-voice-switch-guard`。
+3. Bot 啟動命令：`npm run start:bot`。
+4. Dashboard 啟動命令：`npm run start:dashboard`。
+5. 兩個服務環境變數都填 `.env.example` 的欄位。
+6. `DISCORD_REDIRECT_URI` 改成你的雲端網址，例如 `https://your-app.up.railway.app/auth/callback`。
+
 ## 3-5 萬人大伺服器建議（很重要）
 
 先直接講結論：**目前這份是可用範例，不是最終企業級架構**。
@@ -327,7 +361,7 @@ npm run start:dashboard
 2. 把 dashboard 的 session 改成 Redis store（避免單機記憶體 session 掉線）。
 3. 啟用監控：CPU、記憶體、事件延遲、每分鐘處置數。
 4. 建立 action log 與告警（避免誤封、可追查）。
-5. 先用 `mute` 觀察 1-2 週，再開 `kick/ban`。
+5. 先用 `mute` 或 `add_role` 觀察 1-2 週，再開 `kick/ban`。
 
 目前範例已做的優化：
 
@@ -353,6 +387,7 @@ npm run start:dashboard
 - `windowSeconds = 10`
 - `maxSwitches = 3`
 - `action = mute`（建議先用 mute 測試）
+- 或 `action = add_role` + `actionRoleId = 你要加上的角色 ID`
 
 ---
 

@@ -85,6 +85,13 @@ async function applyAction(member, settings) {
     if (member.bannable) {
       await member.ban({ reason: '10 秒內語音頻道切換超過上限' });
     }
+    return;
+  }
+
+  if (settings.action === 'add_role') {
+    if (!settings.actionRoleId) return;
+    if (member.roles.cache.has(settings.actionRoleId)) return;
+    await member.roles.add(settings.actionRoleId, '10 秒內語音頻道切換超過上限');
   }
 }
 
@@ -140,6 +147,14 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     if (settings.action === 'mute' && !perms.has(PermissionsBitField.Flags.MuteMembers)) return;
     if (settings.action === 'kick' && !perms.has(PermissionsBitField.Flags.KickMembers)) return;
     if (settings.action === 'ban' && !perms.has(PermissionsBitField.Flags.BanMembers)) return;
+    if (settings.action === 'add_role' && !perms.has(PermissionsBitField.Flags.ManageRoles)) return;
+
+    if (settings.action === 'add_role') {
+      if (!settings.actionRoleId) return;
+      const targetRole = guild.roles.cache.get(settings.actionRoleId);
+      if (!targetRole) return;
+      if (me.roles.highest.position <= targetRole.position) return;
+    }
 
     const nowMs = Date.now();
     const count = pushSwitch(guild.id, member.id, nowMs, settings.windowSeconds * 1000);
