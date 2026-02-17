@@ -97,7 +97,31 @@ Get-ChildItem -Path $HOME -Directory -Recurse -ErrorAction SilentlyContinue |
 
 - 如果有看到 `...\BetterDiscord\examples\discord-voice-switch-guard`，就 `cd` 到那一行。
 - 如果有看到 `...\BetterDiscord-main\examples\discord-voice-switch-guard`，就 `cd` 到那一行。
-- 如果都沒有結果，代表你尚未下載專案（請回到步驟 4 用 `git clone` 或 Download ZIP）。
+- 如果都沒有結果，代表你目前電腦裡還沒有這個專案。
+
+
+如果搜尋結果是空白（像你截圖那樣），請直接執行下面其中一種：
+
+### 方案 A：用 Git 下載（推薦）
+
+```powershell
+cd $HOME
+git clone https://github.com/<你的帳號或fork>/BetterDiscord.git
+cd .\BetterDiscord\examples\discord-voice-switch-guard
+```
+
+### 方案 B：用 ZIP 下載（不用 Git）
+
+1. 打開 `https://github.com/<你的帳號或fork>/BetterDiscord`
+2. 按 `Code` -> `Download ZIP`
+3. 解壓縮到你想放的位置（例如 `C:\Users\User\Downloads`）
+4. 在 PowerShell 執行：
+
+```powershell
+cd $HOME\Downloads\BetterDiscord-main\examples\discord-voice-switch-guard
+```
+
+如果你不是解壓在 Downloads，請把上面路徑改成你的實際解壓位置。
 
 你遇到的錯誤是正常的：`/workspace/...` 是我這個雲端工作環境的路徑，不是你電腦的路徑。
 另外你在 Windows PowerShell 直接打 `bash`，如果沒有安裝 WSL 也會失敗。

@@ -45,3 +45,5 @@ npm run start:dashboard
 
 
 > 不知道資料夾在哪：在 PowerShell 執行 `Get-ChildItem -Path $HOME -Directory -Recurse | Where-Object { $_.FullName -like "*discord-voice-switch-guard" }` 快速找路徑。
+
+> 如果搜尋沒有任何結果，代表專案還沒下載到電腦；先 `git clone` 或 Download ZIP 再進入資料夾。
