@@ -1,0 +1,19 @@
+{
+  "name": "discord-voice-switch-guard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Discord bot + web dashboard for anti voice-channel-switch spam",
+  "main": "src/bot.js",
+  "scripts": {
+    "start:bot": "node src/bot.js",
+    "start:dashboard": "node src/dashboard.js",
+    "check": "node --check src/bot.js && node --check src/dashboard.js && node --check src/store.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.6.0",
+    "discord.js": "^14.19.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1"
+  }
+}
